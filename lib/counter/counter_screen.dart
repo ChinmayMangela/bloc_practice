@@ -1,4 +1,5 @@
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
+import 'package:bloc_practice/counter/bloc/counter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,8 @@ class CounterScreen extends StatelessWidget {
   
   Widget _buildBody() {
     return Center(
-      child: BlocBuilder<CounterBloc, int>(builder: (context, state) {
-        return Text('$state');
+      child: BlocBuilder<CounterBloc, CounterState>(builder: (context, state) {
+        return Text('${state.count}');
       }),
     );
   }
@@ -25,7 +26,9 @@ class CounterScreen extends StatelessWidget {
     return FloatingActionButton(onPressed: () {
       // this line created the CounterIncrementPressed() event object and sends it to the CounterBloc
       // then CounterBloc receives this event object and the Bloc finds the registered handler for this event
-      context.read<CounterBloc>().add(CounterIncrementPressed());
+      context.read<CounterBloc>().add(CounterIncrementRequested());
     }, child: Text('+'),);
   }
+
+
 }
