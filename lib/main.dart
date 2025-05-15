@@ -1,11 +1,17 @@
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
 import 'package:bloc_practice/counter/counter_screen.dart';
+import 'package:bloc_practice/todo/presentation/screens/todo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(
-    BlocProvider(create: (_) => CounterBloc(), child: const MyApp()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => CounterBloc(), child: const MyApp()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 
@@ -14,6 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SafeArea(child: CounterScreen()));
+    return MaterialApp(home: SafeArea(child: TodoHomeScreen()));
   }
 }

@@ -1,5 +1,4 @@
 import 'package:bloc_practice/counter/bloc/counter_state.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_event.dart';
