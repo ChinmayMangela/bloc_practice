@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "457162962069",
+    "project_id": "bloc-practice-b00d7",
+    "storage_bucket": "bloc-practice-b00d7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457162962069:android:4f598c1381cafbd875179c",
+        "android_client_info": {
+          "package_name": "com.example.bloc_practice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3EKiZkWYfM7sb6-uImBmSTwGQT3FWxxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

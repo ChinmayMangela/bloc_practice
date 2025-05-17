@@ -1,5 +1,3 @@
-
-
 class Todo {
   final String id;
   final String title;
@@ -12,8 +10,28 @@ class Todo {
     required this.title,
     required this.description,
     required this.createdAt,
-    this.isCompleted = false
+    this.isCompleted = false,
   });
+
+  factory Todo.fromJson(Map<String, dynamic> data) {
+    return Todo(
+      id: data['id'],
+      title: data['title'],
+      description: data['description'],
+      createdAt: data['createdAt'],
+      isCompleted: data['isCompleted'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'createdAt': createdAt,
+      'isCompleted': isCompleted,
+    };
+  }
 }
 
 final List<Todo> dummyTodos = [
