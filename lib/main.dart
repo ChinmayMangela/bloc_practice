@@ -1,5 +1,4 @@
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
-import 'package:bloc_practice/counter/counter_screen.dart';
 import 'package:bloc_practice/todo/data/local/todo_local_data_source.dart';
 import 'package:bloc_practice/todo/presentation/screens/todo_home.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   TodoLocalDataSource.initHive();
+  TodoLocalDataSource.openBox();
   runApp(
     MultiBlocProvider(
       providers: [
