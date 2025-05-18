@@ -21,7 +21,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TodoList(
-        todos: dummyTodos,
+        todos: [],
       ),
     );
   }
