@@ -1,37 +1,26 @@
-
-
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/todo.dart';
 
-abstract class TodoState extends Equatable {}
-
-class TodoInitial extends TodoState {
-  @override
-  List<Object> get props => [];
-}
-
-class TodoLoading extends TodoState {
-  @override
-  List<Object> get props => [];
-}
-
-class TodoLoaded extends TodoState {
+class TodoState extends Equatable {
   final List<Todo> todos;
+  final bool isLoading;
 
-  TodoLoaded(this.todos);
+  const TodoState({
+    this.todos = const [],
+    this.isLoading = false,
+  });
+
+  TodoState copyWith({
+    List<Todo>? todos,
+    bool? isLoading,
+}) {
+    return TodoState(
+      todos: todos ?? this.todos,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
 
   @override
-  List<Object> get props => [todos];
-
-}
-
-class TodoError extends TodoState {
-  final String errorMessage;
-
-  TodoError(this.errorMessage);
-
-  @override
-  List<Object> get props => [errorMessage];
-
+  List<Object?> get props => [todos, isLoading];
 }

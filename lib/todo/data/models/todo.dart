@@ -43,4 +43,18 @@ class Todo extends HiveObject {
       'isCompleted': isCompleted,
     };
   }
+
+  Todo copyWith({
+    String? title,
+    String? description,
+    bool? isCompleted,
+}) {
+    return Todo(
+      id: id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      isCompleted: isCompleted ?? this.isCompleted,
+      createdAt: createdAt,
+    );
+  }
 }

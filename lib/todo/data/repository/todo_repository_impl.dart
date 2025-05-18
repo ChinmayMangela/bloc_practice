@@ -19,14 +19,13 @@ class TodoRepositoryImpl extends TodoRepository {
   }
 
   @override
-  Future<void> removeTodo(Todo todo) async {
-    await _todoLocalDataSource.removeTodo(todo.id);
+  Future<void> removeTodo(String todoId) async {
+    await _todoLocalDataSource.removeTodo(todoId);
   }
 
   @override
-  Future<void> updateTodo(String oldTodoId, Todo newTodo) async {
+  Future<void> updateTodo(Todo newTodo) async {
     await _todoLocalDataSource.updateTodo(newTodo);
   }
-
 
 }

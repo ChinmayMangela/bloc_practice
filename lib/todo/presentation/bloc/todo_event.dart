@@ -17,13 +17,13 @@ class AddTodoRequested extends TodoEvent {
   List<Object?> get props => [todo];
 }
 
-class DeleteTodoRequested extends TodoEvent {
-  final Todo todo;
+class RemoveTodoRequested extends TodoEvent {
+  final String todoId;
 
-  const DeleteTodoRequested(this.todo);
+  const RemoveTodoRequested(this.todoId);
 
   @override
-  List<Object?> get props => [todo];
+  List<Object?> get props => [todoId];
 }
 
 class UpdateTodoRequested extends TodoEvent {
@@ -33,4 +33,22 @@ class UpdateTodoRequested extends TodoEvent {
 
   @override
   List<Object?> get props => [newTodo];
+}
+
+class FetchAllTodoRequested extends TodoEvent {
+
+  const FetchAllTodoRequested();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ToggleTodoCompletedRequested extends TodoEvent {
+  final String todoId;
+
+  const ToggleTodoCompletedRequested(this.todoId);
+
+  @override
+  List<Object?> get props => [todoId];
+
 }
