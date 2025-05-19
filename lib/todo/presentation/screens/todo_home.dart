@@ -19,6 +19,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
     super.initState();
     context.read<TodoBloc>().add(FetchAllTodoRequested());
   }
+
   void _onFloatingButtonTap() {
     showDialog(
       context: context,
@@ -44,7 +45,14 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
           if (state.isLoading) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return TodoList(todos: state.todos);
+            return state.todos.isEmpty
+                ? Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'No todos found\n click on floating action button to add a new todo',
+                  ),
+                )
+                : TodoList(todos: state.todos);
           }
         },
       ),

@@ -1,8 +1,11 @@
 import 'package:bloc_practice/todo/data/models/todo.dart';
-import 'package:bloc_practice/todo/presentation/widgets/add_todo_dialog.dart';
+import 'package:bloc_practice/todo/presentation/bloc/todo_bloc.dart';
 import 'package:bloc_practice/todo/presentation/widgets/edit_todo_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../bloc/todo_event.dart';
 
 class TodoTile extends StatefulWidget {
   const TodoTile({super.key, required this.todo});
@@ -15,14 +18,40 @@ class TodoTile extends StatefulWidget {
 
 class _TodoTileState extends State<TodoTile> {
   void _onEditPressed(BuildContext context) {
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        content: EditTodoDialog(todo: widget.todo),
-      );
-    });
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(content: EditTodoDialog(todo: widget.todo));
+      },
+    );
   }
 
-  void _onDeletePressed(BuildContext context) {}
+  void _onDeletePressed(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete Todo'),
+          content: Text('Are you sure you want to delete this todo?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<TodoBloc>().add(RemoveTodoRequested(widget.todo.id));
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
