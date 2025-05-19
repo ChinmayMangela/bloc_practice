@@ -22,7 +22,7 @@ class Todo extends HiveObject {
     required this.description,
     required this.createdAt,
     this.isCompleted = false,
-  }) : id = Uuid().v4();
+  }) : id = id ?? const Uuid().v4();
 
   factory Todo.fromJson(Map<String, dynamic> data) {
     return Todo(
@@ -50,11 +50,15 @@ class Todo extends HiveObject {
     bool? isCompleted,
 }) {
     return Todo(
-      id: id,
       title: title ?? this.title,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
       createdAt: createdAt,
     );
+  }
+
+  @override
+  String toString() {
+    return 'Todo(id: $id, title: $title, description: $description, isCompleted: $isCompleted, createdAt: $createdAt)';
   }
 }

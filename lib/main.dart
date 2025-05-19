@@ -6,11 +6,10 @@ import 'package:bloc_practice/todo/presentation/bloc/todo_bloc.dart';
 import 'package:bloc_practice/todo/presentation/screens/todo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  TodoLocalDataSource.initHive();
+  await TodoLocalDataSource.initHive();
   final todoLocalDataSource = TodoLocalDataSource();
   final todoRepository = TodoRepositoryImpl(
     todoLocalDataSource: todoLocalDataSource,

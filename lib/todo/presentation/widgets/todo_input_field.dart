@@ -10,8 +10,10 @@ class TodoInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: validator,
       decoration: InputDecoration(
+        hintText: hintText,
         border: _buildBorder(false),
         enabledBorder: _buildBorder(false),
         focusedBorder: _buildBorder(true)

@@ -5,35 +5,35 @@ import 'package:bloc_practice/todo/presentation/widgets/todo_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddTodoDialog extends StatefulWidget {
-  const AddTodoDialog({super.key});
+class EditTodoDialog extends StatefulWidget {
+  const EditTodoDialog({super.key, required this.todo});
 
+  final Todo todo;
   @override
-  State<AddTodoDialog> createState() => _AddTodoDialogState();
+  State<EditTodoDialog> createState() => _EditTodoDialogState();
 }
 
-class _AddTodoDialogState extends State<AddTodoDialog> {
-  late TextEditingController _titleController;
-  late TextEditingController _descriptionController;
+class _EditTodoDialogState extends State<EditTodoDialog> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController();
-    _descriptionController = TextEditingController();
+    _titleController.text = widget.todo.title;
+    _descriptionController.text = widget.todo.description;
   }
 
   void _onSaveTap() {
     if (_formKey.currentState!.validate()) {
-      final title = _titleController.text.trim();
-      final description = _descriptionController.text.trim();
       final newTodo = Todo(
-        title: title,
-        description: description,
-        createdAt: DateTime.now(),
+        id: widget.todo.id,
+        title: _titleController.text.trim(),
+        description:  _descriptionController.text.trim(),
+        createdAt: widget.todo.createdAt
       );
-      context.read<TodoBloc>().add(AddTodoRequested(newTodo));
+      context.read<TodoBloc>().add(UpdateTodoRequested(newTodo));
       print(newTodo.toString());
       Navigator.of(context).pop();
     }
