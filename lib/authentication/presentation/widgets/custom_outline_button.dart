@@ -15,7 +15,7 @@ class CustomOutlineButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 58,
+        height: 50,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade400, width: 0.2),
           borderRadius: BorderRadius.circular(10),

@@ -2,7 +2,9 @@ import 'package:bloc_practice/authentication/presentation/widgets/custom_button.
 import 'package:bloc_practice/authentication/presentation/widgets/custom_outline_button.dart';
 import 'package:bloc_practice/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../widgets/custom_social_button.dart';
 import '../widgets/custom_text_field.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -79,6 +81,10 @@ class _SignInScreenState extends State<SignInScreen> {
               _buildOrMessage(),
               SizedBox(height: 40),
               _buildSignUpButton(),
+              SizedBox(height: 20),
+              _buildAppleSignInButton(),
+              SizedBox(height: 20),
+              _buildGoogleSignInButton(),
             ],
           ),
         ),
@@ -141,5 +147,13 @@ class _SignInScreenState extends State<SignInScreen> {
       label: 'Sign Up with email',
       onTap: _onSignUpTap,
     );
+  }
+
+  Widget _buildAppleSignInButton() {
+    return CustomSocialButton(label: 'Sign In with Apple', onTap: () {}, buttonColor: Colors.white, icon: FontAwesomeIcons.apple,);
+  }
+
+  Widget _buildGoogleSignInButton() {
+    return CustomSocialButton(label: 'Sign In with Google', onTap: () {}, buttonColor: Color(0xFF4181ed), icon:  FontAwesomeIcons.google,);
   }
 }
