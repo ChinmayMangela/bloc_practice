@@ -1,4 +1,5 @@
 import 'package:bloc_practice/authentication/presentation/widgets/custom_button.dart';
+import 'package:bloc_practice/authentication/presentation/widgets/custom_outline_button.dart';
 import 'package:bloc_practice/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,8 @@ class _SignInScreenState extends State<SignInScreen> {
       print(_passwordController.text.trim());
     }
   }
+
+  void _onSignUpTap() {}
 
   @override
   void initState() {
@@ -72,6 +75,10 @@ class _SignInScreenState extends State<SignInScreen> {
               _buildPasswordField(),
               SizedBox(height: 20),
               _buildSignInButton(),
+              SizedBox(height: 40),
+              _buildOrMessage(),
+              SizedBox(height: 40),
+              _buildSignUpButton(),
             ],
           ),
         ),
@@ -112,5 +119,27 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget _buildSignInButton() {
     return CustomButton(label: 'Sign In', onTap: _onSignInTap);
+  }
+
+  Widget _buildOrMessage() {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: Colors.grey.shade900)),
+        Text(
+          ' Or ',
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+        ),
+        Expanded(child: Divider(color: Colors.grey.shade900)),
+      ],
+    );
+  }
+
+  Widget _buildSignUpButton() {
+    return CustomOutlineButton(
+      label: 'Sign Up with email',
+      onTap: _onSignUpTap,
+    );
   }
 }
