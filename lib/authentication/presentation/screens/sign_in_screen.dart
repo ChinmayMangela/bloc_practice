@@ -1,3 +1,4 @@
+import 'package:bloc_practice/authentication/presentation/widgets/custom_button.dart';
 import 'package:bloc_practice/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,13 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       _obscurePassword = !_obscurePassword;
     });
+  }
+
+  void _onSignInTap() {
+    if (_formKey.currentState!.validate()) {
+      print(_emailController.text.trim());
+      print(_passwordController.text.trim());
+    }
   }
 
   @override
@@ -63,6 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: 20),
               _buildPasswordField(),
               SizedBox(height: 20),
+              _buildSignInButton(),
             ],
           ),
         ),
@@ -99,5 +108,9 @@ class _SignInScreenState extends State<SignInScreen> {
       togglePasswordState: _togglePasswordState,
       validator: _validatePassword,
     );
+  }
+
+  Widget _buildSignInButton() {
+    return CustomButton(label: 'Sign In', onTap: _onSignInTap);
   }
 }
