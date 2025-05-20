@@ -7,9 +7,10 @@ class CustomTextField extends StatelessWidget {
     required this.obscureText,
     required this.isPasswordField,
     this.validator,
-    this.togglePasswordState,
+    this.togglePasswordState, required this.hintText,
   });
 
+  final String hintText;
   final TextEditingController controller;
   final bool obscureText;
   final bool isPasswordField;
@@ -19,10 +20,14 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+        color: Colors.white
+      ),
       controller:  controller,
       obscureText: obscureText,
       validator: validator,
       decoration: InputDecoration(
+        hintText: hintText,
         suffixIcon: _buildSuffixIcon(),
         border: _buildBorder(),
         focusedBorder: _buildBorder(),
@@ -44,7 +49,7 @@ class CustomTextField extends StatelessWidget {
     return isPasswordField
         ? IconButton(
           onPressed: togglePasswordState,
-          icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
+          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.grey.shade400,),
         )
         : null;
   }
