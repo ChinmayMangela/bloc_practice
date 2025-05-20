@@ -1,3 +1,4 @@
+import 'package:bloc_practice/authentication/presentation/screens/sign_in_screen.dart';
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
 import 'package:bloc_practice/todo/data/local/todo_local_data_source.dart';
 import 'package:bloc_practice/todo/data/models/todo.dart';
@@ -36,6 +37,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SafeArea(child: TodoHomeScreen()));
+    return MaterialApp(home: SafeArea(child: SignInScreen()));
   }
 }
