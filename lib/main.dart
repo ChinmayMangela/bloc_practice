@@ -8,6 +8,8 @@ import 'package:bloc_practice/todo/presentation/screens/todo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'authentication/presentation/screens/sign_up_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await TodoLocalDataSource.initHive();
@@ -37,6 +39,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SafeArea(child: SignInScreen()));
+    return SafeArea(
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        scaffoldMessengerKey: scaffoldMessengerKey,
+        routes: _buildRoutes,
+          home: SafeArea(child: SignInScreen())),
+    );
   }
+
+  Map<String, WidgetBuilder> get _buildRoutes => {
+    '/signUp': (context) => SignUpScreen(),
+  };
 }

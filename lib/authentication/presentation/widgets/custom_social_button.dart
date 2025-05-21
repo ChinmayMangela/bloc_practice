@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomSocialButton extends StatelessWidget {
   const CustomSocialButton({super.key, required this.label, required this.onTap, required this.buttonColor, required this.icon});
@@ -24,6 +23,7 @@ class CustomSocialButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon),
+              SizedBox(width: 10),
               Text(label),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:bloc_practice/constants/string_constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomOutlineButton extends StatelessWidget {
@@ -19,7 +20,7 @@ class CustomOutlineButton extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade400, width: 0.2),
           borderRadius: BorderRadius.circular(10),
-          color: Colors.transparent,
+          color: outlineButtonColor,
         ),
         child: Center(child: Text(label, style: Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: Colors.white
