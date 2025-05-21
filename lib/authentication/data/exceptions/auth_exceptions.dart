@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 class AuthExceptions {
   static void handleAuthException(FirebaseException exception) {
     if (kDebugMode) print(exception.message!);
-    Utils.showSnackBar(exception.toString());
 
     switch (exception.code) {
       case 'invalid-email':
@@ -49,7 +48,7 @@ class AuthExceptions {
     }
   }
 
-  static void handelGenericException(Exception exception) {
+  static void handelGenericException(Object exception) {
     if (kDebugMode) print(exception);
     Utils.showSnackBar(exception.toString());
   }
