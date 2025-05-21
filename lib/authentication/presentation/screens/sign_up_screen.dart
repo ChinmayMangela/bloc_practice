@@ -158,6 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       validator: _validateConfirmPassword,
     );
   }
+  
 
   Widget _buildSignUpButton() {
     return CustomButton(label: 'Sign In', onTap: _onSignInTap);
