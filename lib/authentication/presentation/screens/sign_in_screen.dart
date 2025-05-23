@@ -34,6 +34,10 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  void _onForgotPasswordTap() {
+    navigatorKey.currentState!.pushNamed('/forgotPassword');
+  }
+
   void _onSignUpTap() {
     navigatorKey.currentState!.pushNamed('/signUp');
   }
@@ -79,7 +83,9 @@ class _SignInScreenState extends State<SignInScreen> {
               _buildEmailField(),
               SizedBox(height: screenHeight * 0.03),
               _buildPasswordField(),
-              SizedBox(height: screenHeight * 0.03),
+              SizedBox(height: screenHeight * 0.02),
+              _buildForgotPasswordButton(),
+              SizedBox(height: screenHeight * 0.02),
               _buildSignInButton(),
               SizedBox(height: screenHeight * 0.03),
               _buildOrMessage(),
@@ -153,11 +159,33 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  Widget _buildForgotPasswordButton() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: _onForgotPasswordTap,
+        child: Text('Forgot Password', style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: Colors.grey
+        ),),
+      ),
+    );
+  }
+
   Widget _buildAppleSignInButton() {
-    return CustomSocialButton(label: 'Sign In with Apple', onTap: () {}, buttonColor: appleAuthButtonColor, icon: FontAwesomeIcons.apple,);
+    return CustomSocialButton(
+      label: 'Sign In with Apple',
+      onTap: () {},
+      buttonColor: appleAuthButtonColor,
+      icon: FontAwesomeIcons.apple,
+    );
   }
 
   Widget _buildGoogleSignInButton() {
-    return CustomSocialButton(label: 'Sign In with Google', onTap: () {}, buttonColor: googleAuthButtonColor, icon:  FontAwesomeIcons.google,);
+    return CustomSocialButton(
+      label: 'Sign In with Google',
+      onTap: () {},
+      buttonColor: googleAuthButtonColor,
+      icon: FontAwesomeIcons.google,
+    );
   }
 }

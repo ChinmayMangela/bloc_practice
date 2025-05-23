@@ -8,6 +8,7 @@ import 'package:bloc_practice/todo/presentation/screens/todo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'authentication/presentation/screens/forgot_password_screen.dart';
 import 'authentication/presentation/screens/sign_up_screen.dart';
 
 void main() async {
@@ -50,5 +51,6 @@ class MyApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> get _buildRoutes => {
     '/signUp': (context) => SignUpScreen(),
+    '/forgotPassword': (context) => ForgotPasswordScreen(),
   };
 }

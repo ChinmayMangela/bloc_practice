@@ -1,6 +1,7 @@
 import 'package:bloc_practice/authentication/data/exceptions/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../utils/utils.dart';
 import '../../model/end_user.dart';
 
 class AuthRemoteDataSource {
@@ -57,6 +58,7 @@ class AuthRemoteDataSource {
   Future<void> forgotPassword({required String email}) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
+      Utils.showSnackBar('Password reset email sent.');
     } on FirebaseAuthException catch (e) {
       AuthExceptions.handleAuthException(e);
     } on FormatException catch (e) {
@@ -69,6 +71,7 @@ class AuthRemoteDataSource {
   Future<void> sendEmailVerification() async {
     try {
       await _firebaseAuth.currentUser!.sendEmailVerification();
+      Utils.showSnackBar('Verification email sent.');
     } on FirebaseAuthException catch (e) {
       AuthExceptions.handleAuthException(e);
     } on FormatException catch (e) {
