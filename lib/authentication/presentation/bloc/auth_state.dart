@@ -6,33 +6,34 @@ final class AuthInitial extends AuthState {
   AuthInitial();
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 final class AuthLoading extends AuthState {
   AuthLoading();
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 final class Authenticated extends AuthState {
   Authenticated();
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
-final class Unauthenticated extends AuthState {
-  Unauthenticated();
+final class UnAuthenticated extends AuthState {
+  UnAuthenticated();
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 final class AuthError extends AuthState {
-  AuthError();
+  final String errorMessage;
+  AuthError(this.errorMessage);
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [errorMessage];
 }

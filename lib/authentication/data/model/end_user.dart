@@ -23,12 +23,16 @@ class EndUser extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-      'password': password,
-    };
+    return {'id': id, 'name': name, 'email': email, 'password': password};
+  }
+
+  EndUser copyWith({String? name, String? email, String? password}) {
+    return EndUser(
+      id: id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+    );
   }
 
   @override
