@@ -1,5 +1,6 @@
 import 'package:bloc_practice/authentication/data/data_source/remote/auth_remote_data_source.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:bloc_practice/authentication/presentation/screens/auth_gate.dart';
 import 'package:bloc_practice/authentication/presentation/screens/sign_in_screen.dart';
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
 import 'package:bloc_practice/firebase_options.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
         routes: _buildRoutes,
         home: SafeArea(
 
-            child: SignInScreen()),
+            child: AuthGate()),
       ),
     );
   }
