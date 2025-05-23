@@ -1,10 +1,14 @@
+import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:bloc_practice/authentication/presentation/bloc/auth_state.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_button.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_outline_button.dart';
 import 'package:bloc_practice/main.dart';
 import 'package:bloc_practice/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../constants/string_constants.dart';
+import '../bloc/auth_event.dart';
 import '../widgets/custom_social_button.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -29,8 +33,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _onSignInTap() {
     if (_formKey.currentState!.validate()) {
-      print(_emailController.text.trim());
-      print(_passwordController.text.trim());
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+      context.read<AuthBloc>().add(SignInRequested(email, password));
     }
   }
 
@@ -66,10 +71,23 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.black, body: _buildBody());
+    return BlocConsumer<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Scaffold(backgroundColor: Colors.black, body: _buildBody(state));
+      },
+      listener: (context, state) {
+        if (state is Authenticated) {
+          navigatorKey.currentState!.pushReplacementNamed('/todoHome');
+        } else if (state is AuthError) {
+          Utils.showSnackBar(state.errorMessage);
+        } else if (state is AuthInfo) {
+          Utils.showSnackBar(state.message);
+        }
+      },
+    );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AuthState state) {
     final screenHeight = Utils.getScreenHeight(context);
     return SingleChildScrollView(
       child: Padding(
@@ -86,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: screenHeight * 0.02),
               _buildForgotPasswordButton(),
               SizedBox(height: screenHeight * 0.02),
-              _buildSignInButton(),
+              _buildSignInButton(state),
               SizedBox(height: screenHeight * 0.03),
               _buildOrMessage(),
               SizedBox(height: screenHeight * 0.03),
@@ -133,8 +151,19 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildSignInButton() {
-    return CustomButton(label: 'Sign In', onTap: _onSignInTap);
+  Widget _buildSignInButton(AuthState state) {
+    return CustomButton(
+      onTap: _onSignInTap,
+      child:
+          state is AuthLoading
+              ? CircularProgressIndicator()
+              : Text(
+                'Sign In',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: Colors.white),
+              ),
+    );
   }
 
   Widget _buildOrMessage() {
@@ -164,9 +193,12 @@ class _SignInScreenState extends State<SignInScreen> {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: _onForgotPasswordTap,
-        child: Text('Forgot Password', style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-          color: Colors.grey
-        ),),
+        child: Text(
+          'Forgot Password',
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+        ),
       ),
     );
   }

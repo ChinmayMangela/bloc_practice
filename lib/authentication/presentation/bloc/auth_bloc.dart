@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSignOutRequested(SignOutRequested event, Emitter<AuthState> emit) async {
-    AuthLoading();
+    emit(AuthLoading());
     try {
       await _authRepository.signOut();
       emit(UnAuthenticated());

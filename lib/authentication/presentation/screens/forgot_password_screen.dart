@@ -1,8 +1,11 @@
+import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_button.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_text_field.dart';
 import 'package:bloc_practice/main.dart';
 import 'package:bloc_practice/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -12,6 +15,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
 
   @override
@@ -32,6 +36,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   void _onForgotPasswordTap() {
     final email = _emailController.text.trim();
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(ForgotPasswordRequested(email));
+    }
   }
 
   @override
@@ -59,7 +66,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       padding: const EdgeInsets.all(16),
       child: Center(
         child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -84,6 +91,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   Widget _buildForgotPasswordButton() {
-    return CustomButton(label: 'Forgot Password', onTap: _onForgotPasswordTap);
+    return CustomButton(onTap: _onForgotPasswordTap, child: Text(
+      'Forgot Password',
+      style: Theme.of(
+        context,
+      ).textTheme.bodyMedium!.copyWith(color: Colors.white),
+    ));
   }
 }

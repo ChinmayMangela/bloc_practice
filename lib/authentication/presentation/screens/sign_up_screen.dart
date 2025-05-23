@@ -1,7 +1,14 @@
+import 'package:bloc_practice/authentication/data/model/end_user.dart';
+import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
+import 'package:bloc_practice/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../utils/utils.dart';
+import '../bloc/auth_state.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -35,15 +42,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _onSignInTap() {
     if (_formKey.currentState!.validate()) {
-      if(kDebugMode) {
-        print(_nameController.text.trim());
-        print(_emailController.text.trim());
-        print(_passwordController.text.trim());
-        print(_confirmPasswordController.text.trim());
-      }
+      final name = _nameController.text.trim();
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+      final user = EndUser(
+        id: '',
+        name: name,
+        email: email,
+        password: password,
+      );
+      context.read<AuthBloc>().add(SignUpRequested(user));
     }
   }
-
 
   @override
   void initState() {
@@ -63,6 +73,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _confirmPasswordController.dispose();
   }
 
+  String? _validateName(String? name) {
+    return Utils.nameValidator(name);
+  }
+
   String? _validateEmail(String? email) {
     return Utils.emailValidator(email);
   }
@@ -77,10 +91,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.black, body: _buildBody());
+    return BlocConsumer<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Scaffold(backgroundColor: Colors.black, body: _buildBody(state));
+      },
+      listener: (context, state) {
+        if (state is Authenticated) {
+          navigatorKey.currentState!.pushReplacementNamed('/todoHome');
+        } else if (state is AuthError) {
+          Utils.showSnackBar(state.errorMessage);
+        } else if (state is AuthInfo) {
+          Utils.showSnackBar(state.message);
+        }
+      },
+    );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AuthState state) {
     final screenHeight = Utils.getScreenHeight(context);
     return SingleChildScrollView(
       child: Padding(
@@ -99,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: screenHeight * 0.03),
               _buildConfirmPasswordField(),
               SizedBox(height: screenHeight * 0.03),
-              _buildSignUpButton(),
+              _buildSignUpButton(state),
             ],
           ),
         ),
@@ -123,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: _nameController,
       obscureText: false,
       isPasswordField: false,
-      validator: _validateEmail,
+      validator: _validateName,
     );
   }
 
@@ -158,11 +185,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       validator: _validateConfirmPassword,
     );
   }
-  
 
-  Widget _buildSignUpButton() {
-    return CustomButton(label: 'Sign In', onTap: _onSignInTap);
+  Widget _buildSignUpButton(AuthState state) {
+    return CustomButton(
+      onTap: _onSignInTap,
+      child:
+          state is AuthLoading
+              ? CircularProgressIndicator()
+              : Text(
+                'Sign Up',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: Colors.white),
+              ),
+    );
   }
-
-
 }

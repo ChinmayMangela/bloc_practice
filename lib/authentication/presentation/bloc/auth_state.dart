@@ -38,4 +38,10 @@ final class AuthError extends AuthState {
   List<Object?> get props => [errorMessage];
 }
 
+class AuthInfo extends AuthState {
+  final String message;
+  AuthInfo(this.message);
 
+  @override
+  List<Object?> get props => [message];
+}
