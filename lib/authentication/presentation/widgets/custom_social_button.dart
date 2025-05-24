@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomSocialButton extends StatelessWidget {
-  const CustomSocialButton({super.key, required this.label, required this.onTap, required this.buttonColor, required this.icon});
+  const CustomSocialButton({
+    super.key,
+    required this.onTap,
+    required this.buttonColor,
+    required this.child,
+  });
 
-  final String label;
   final void Function() onTap;
   final Color buttonColor;
-  final IconData icon;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +20,9 @@ class CustomSocialButton extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           color: buttonColor,
-          borderRadius: BorderRadius.circular(10)
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon),
-              SizedBox(width: 10),
-              Text(label),
-            ],
-          ),
-        ),
+        child: Center(child: child),
       ),
     );
   }

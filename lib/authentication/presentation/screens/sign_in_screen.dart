@@ -31,6 +31,10 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
+  void _onGoogleSignInTap() {
+    context.read<AuthBloc>().add(GoogleSignInRequested());
+  }
+
   void _onSignInTap() {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
@@ -112,7 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: screenHeight * 0.03),
               _buildAppleSignInButton(),
               SizedBox(height: screenHeight * 0.03),
-              _buildGoogleSignInButton(),
+              _buildGoogleSignInButton(state),
             ],
           ),
         ),
@@ -205,19 +209,34 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget _buildAppleSignInButton() {
     return CustomSocialButton(
-      label: 'Sign In with Apple',
       onTap: () {},
       buttonColor: appleAuthButtonColor,
-      icon: FontAwesomeIcons.apple,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(FontAwesomeIcons.apple),
+          SizedBox(width: 10),
+          Text('Sign In with Apple'),
+        ],
+      ),
     );
   }
 
-  Widget _buildGoogleSignInButton() {
+  Widget _buildGoogleSignInButton(AuthState state) {
     return CustomSocialButton(
-      label: 'Sign In with Google',
-      onTap: () {},
+      onTap: _onGoogleSignInTap,
       buttonColor: googleAuthButtonColor,
-      icon: FontAwesomeIcons.google,
+      child:
+          AuthState is AuthLoading
+              ? CircularProgressIndicator()
+              : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(FontAwesomeIcons.google),
+                  SizedBox(width: 10),
+                  Text('Sign In with Google'),
+                ],
+              ),
     );
   }
 }

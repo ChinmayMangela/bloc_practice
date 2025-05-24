@@ -1,5 +1,6 @@
 import 'package:bloc_practice/authentication/data/exceptions/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../utils/utils.dart';
 import '../../model/end_user.dart';
@@ -80,4 +81,21 @@ class AuthRemoteDataSource {
       AuthExceptions.handelGenericException(e);
     }
   }
+
+  Future<void> signInWithGoogle() async {
+
+    // Triggers the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser!.authentication;
+
+    // creates a new credentials
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth?.idToken,
+      accessToken: googleAuth?.accessToken,
+    );
+    // i will add the function for saving the credentials
+  }
+
 }

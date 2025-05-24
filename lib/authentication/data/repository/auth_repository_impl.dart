@@ -33,4 +33,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signUpWithEmail(EndUser user) async {
     await _authRemoteDataSource.signUpWithEmail(user: user);
   }
+
+  @override
+  Future<void> signInWithGoogle() async {
+    await _authRemoteDataSource.signInWithGoogle();
+  }
 }

@@ -2,8 +2,6 @@ import 'package:bloc_practice/authentication/data/model/end_user.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
 import 'package:bloc_practice/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

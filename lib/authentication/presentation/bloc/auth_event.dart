@@ -50,3 +50,10 @@ final class CheckEmailVerifiedRequested extends AuthEvent {
   @override
   List<Object?> get props => [];
 }
+
+final class GoogleSignInRequested extends AuthEvent {
+  GoogleSignInRequested();
+
+  @override
+  List<Object?> get props => [];
+}
