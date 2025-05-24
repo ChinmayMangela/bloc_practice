@@ -1,5 +1,6 @@
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
+import 'package:bloc_practice/authentication/presentation/bloc/auth_state.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_button.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_text_field.dart';
 import 'package:bloc_practice/main.dart';
@@ -72,7 +73,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             children: [
               _buildEmailField(),
               const SizedBox(height: 16),
-              _buildForgotPasswordButton(),
+              BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+                if(state is AuthLoading) {
+                  return Center(child: CircularProgressIndicator(),);
+                }
+                return _buildForgotPasswordButton();
+              })
             ],
           ),
         ),

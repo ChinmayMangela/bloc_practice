@@ -50,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authRepository.resetPassword(event.email);
+      emit(UnAuthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));
     }
