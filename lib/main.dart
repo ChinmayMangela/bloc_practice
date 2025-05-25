@@ -1,6 +1,7 @@
 import 'package:bloc_practice/authentication/data/data_source/remote/auth_remote_data_source.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_practice/authentication/presentation/screens/auth_gate.dart';
+import 'package:bloc_practice/authentication/presentation/screens/email_verification_screen.dart';
 import 'package:bloc_practice/authentication/presentation/screens/sign_in_screen.dart';
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
 import 'package:bloc_practice/firebase_options.dart';
@@ -19,9 +20,7 @@ import 'authentication/presentation/screens/sign_up_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await TodoLocalDataSource.initHive();
   final todoLocalDataSource = TodoLocalDataSource();
   final todoRepository = TodoRepositoryImpl(
@@ -62,9 +61,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         scaffoldMessengerKey: scaffoldMessengerKey,
         routes: _buildRoutes,
-        home: SafeArea(
-
-            child: AuthGate()),
+        home: SafeArea(child: AuthGate()),
       ),
     );
   }
@@ -74,5 +71,6 @@ class MyApp extends StatelessWidget {
     '/forgotPassword': (context) => ForgotPasswordScreen(),
     '/todoHome': (context) => TodoHomeScreen(),
     '/signIn': (context) => SignInScreen(),
+    '/emailVerification': (context) => EmailVerificationScreen(),
   };
 }

@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutRequested>(_onSignOutRequested);
     on<ForgotPasswordRequested>(_onForgotPasswordRequested);
     on<GoogleSignInRequested>(_onGoogleSignInRequested);
+    on<SendEmailVerificationRequested>(_onSendEmailVerificationRequested);
   }
 
   Future<void> _onSignUpRequested(
@@ -23,7 +24,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authRepository.signUpWithEmail(event.user);
-      emit(Authenticated());
+      await _authRepository.sendEmailVerification();
+      final isEmailVerified = await _authRepository.checkEmailVerified();
+      if(isEmailVerified == true) {
+        emit(Authenticated());
+      } else {
+        emit(EmailNotVerified());
+      }
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -80,4 +87,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthError(e.toString()));
     }
   }
+
+  Future<void> _onSendEmailVerificationRequested(
+      SendEmailVerificationRequested event,
+      Emitter<AuthState> emit,
+      ) async {
+    try {
+      await _authRepository.sendEmailVerification();
+      emit(AuthInfo('Verification email has been resent. Please check your inbox.'));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
 }

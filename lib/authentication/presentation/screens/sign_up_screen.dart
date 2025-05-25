@@ -96,6 +96,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       listener: (context, state) {
         if (state is Authenticated) {
           navigatorKey.currentState!.pushReplacementNamed('/todoHome');
+        } else if(state is EmailNotVerified) {
+          navigatorKey.currentState!.pushReplacementNamed('/emailVerification');
         } else if (state is AuthError) {
           Utils.showSnackBar(state.errorMessage);
         } else if (state is AuthInfo) {

@@ -58,6 +58,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
     return AppBar(
       title: Text('Todo App'),
       centerTitle: true,
+        automaticallyImplyLeading: false,
       actions: [
         IconButton(
           onPressed: () {

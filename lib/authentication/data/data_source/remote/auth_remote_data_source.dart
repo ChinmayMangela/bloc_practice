@@ -83,12 +83,12 @@ class AuthRemoteDataSource {
   }
 
   Future<void> signInWithGoogle() async {
-
     // Triggers the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser!.authentication;
 
     // creates a new credentials
     final credential = GoogleAuthProvider.credential(
@@ -98,4 +98,20 @@ class AuthRemoteDataSource {
     // i will add the function for saving the credentials
   }
 
+  Future<bool?> checkEmailVerified() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await user?.reload();
+      return user?.emailVerified;
+    } on FirebaseAuthException catch (e) {
+      AuthExceptions.handleAuthException(e);
+      return null;
+    } on FormatException catch (e) {
+      AuthExceptions.handleFormatException(e);
+      return null;
+    } catch (e) {
+      AuthExceptions.handelGenericException(e);
+      return null;
+    }
+  }
 }

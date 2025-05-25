@@ -45,3 +45,17 @@ class AuthInfo extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+
+class EmailVerified extends AuthState {
+  EmailVerified();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class EmailNotVerified extends AuthState {
+  EmailNotVerified();
+
+  @override
+  List<Object?> get props => [];
+}
