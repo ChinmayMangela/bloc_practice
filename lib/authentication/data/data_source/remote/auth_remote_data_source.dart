@@ -25,7 +25,7 @@ class AuthRemoteDataSource {
     } on FormatException catch (e) {
       AuthExceptions.handleFormatException(e);
     } catch (e) {
-      AuthExceptions.handelGenericException(e);
+      AuthExceptions.handleGenericException(e);
     }
   }
 
@@ -40,7 +40,7 @@ class AuthRemoteDataSource {
     } on FormatException catch (e) {
       AuthExceptions.handleFormatException(e);
     } catch (e) {
-      AuthExceptions.handelGenericException(e);
+      AuthExceptions.handleGenericException(e);
     }
   }
 
@@ -52,7 +52,7 @@ class AuthRemoteDataSource {
     } on FormatException catch (e) {
       AuthExceptions.handleFormatException(e);
     } catch (e) {
-      AuthExceptions.handelGenericException(e);
+      AuthExceptions.handleGenericException(e);
     }
   }
 
@@ -65,7 +65,7 @@ class AuthRemoteDataSource {
     } on FormatException catch (e) {
       AuthExceptions.handleFormatException(e);
     } catch (e) {
-      AuthExceptions.handelGenericException(e);
+      AuthExceptions.handleGenericException(e);
     }
   }
 
@@ -78,7 +78,7 @@ class AuthRemoteDataSource {
     } on FormatException catch (e) {
       AuthExceptions.handleFormatException(e);
     } catch (e) {
-      AuthExceptions.handelGenericException(e);
+      AuthExceptions.handleGenericException(e);
     }
   }
 
@@ -86,14 +86,18 @@ class AuthRemoteDataSource {
     // Triggers the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
+    if(googleUser == null) {
+      throw AuthException('Google sign in cancelled by user');
+    }
+
     // obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
     // creates a new credentials
     final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth?.idToken,
-      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth.idToken,
+      accessToken: googleAuth.accessToken,
     );
     // i will add the function for saving the credentials
   }
@@ -110,7 +114,7 @@ class AuthRemoteDataSource {
       AuthExceptions.handleFormatException(e);
       return null;
     } catch (e) {
-      AuthExceptions.handelGenericException(e);
+      AuthExceptions.handleGenericException(e);
       return null;
     }
   }

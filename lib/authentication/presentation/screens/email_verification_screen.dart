@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_state.dart';
 import 'package:bloc_practice/authentication/presentation/widgets/custom_button.dart';
 import 'package:bloc_practice/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,25 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+  Timer? _emailCheckTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(CheckEmailVerifiedRequested());
+
+    FirebaseAuth.instance.currentUser!.reload();
+    _emailCheckTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      context.read<AuthBloc>().add(CheckEmailVerifiedRequested());
+    });
+  }
+
+  @override
+  void dispose() {
+    _emailCheckTimer?.cancel(); // Clean up
+    super.dispose();
+  }
+
   void _onResendEmailVerificationTap() {
     context.read<AuthBloc>().add(SendEmailVerificationRequested());
   }
@@ -30,7 +51,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          navigatorKey.currentState!.pushReplacementNamed('/home');
+          navigatorKey.currentState!.pushReplacementNamed('/todoHome');
         } else if (state is UnAuthenticated) {
           navigatorKey.currentState!.pushReplacementNamed('/signIn');
         } else if (state is AuthError) {
