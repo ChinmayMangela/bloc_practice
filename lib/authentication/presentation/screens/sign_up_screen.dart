@@ -1,4 +1,4 @@
-import 'package:bloc_practice/authentication/data/model/end_user.dart';
+import 'package:bloc_practice/authentication/data/model/user_model.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
 import 'package:bloc_practice/main.dart';
@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      final user = EndUser(
+      final user = UserModel(
         id: '',
         name: name,
         email: email,

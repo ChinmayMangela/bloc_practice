@@ -1,9 +1,9 @@
 import 'package:bloc_practice/authentication/data/exceptions/auth_exceptions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../utils/utils.dart';
-import '../../model/end_user.dart';
+import '../../model/user_model.dart';
 
 class AuthRemoteDataSource {
   const AuthRemoteDataSource({required FirebaseAuth firebaseAuth})
@@ -29,7 +29,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<void> signUpWithEmail({required EndUser user}) async {
+  Future<void> signUpWithEmail({required UserModel user}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: user.email,

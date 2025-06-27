@@ -1,5 +1,5 @@
 import 'package:bloc_practice/authentication/data/data_source/remote/auth_remote_data_source.dart';
-import 'package:bloc_practice/authentication/data/model/end_user.dart';
+import 'package:bloc_practice/authentication/data/model/user_model.dart';
 import 'package:bloc_practice/authentication/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -30,7 +30,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signUpWithEmail(EndUser user) async {
+  Future<void> signUpWithEmail(UserModel user) async {
     await _authRemoteDataSource.signUpWithEmail(user: user);
   }
 

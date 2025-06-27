@@ -1,5 +1,5 @@
 
-import 'package:bloc_practice/authentication/data/model/end_user.dart';
+import 'package:bloc_practice/authentication/data/model/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {}
@@ -14,7 +14,7 @@ final class SignInRequested extends AuthEvent {
 }
 
 final class SignUpRequested extends AuthEvent {
-  final EndUser user;
+  final UserModel user;
 
   SignUpRequested(this.user);
 
