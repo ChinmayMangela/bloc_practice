@@ -28,7 +28,7 @@ void main() async {
   );
 
   final firebaseAuth = FirebaseAuth.instance;
-  final authRemoteDataSource = AuthRemoteDataSource(firebaseAuth: firebaseAuth);
+  final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth: firebaseAuth);
   final authRepository = AuthRepositoryImpl(
     authRemoteDataSource: authRemoteDataSource,
   );
