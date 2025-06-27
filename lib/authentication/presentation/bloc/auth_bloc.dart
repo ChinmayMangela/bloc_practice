@@ -1,3 +1,4 @@
+import 'package:bloc_practice/authentication/domain/use_cases/forgot_password.dart';
 import 'package:bloc_practice/authentication/domain/use_cases/user_sign_up.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_state.dart';
@@ -10,18 +11,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignUp _userSignUp;
   final UserSignIn _userSignIn;
   final UserSignOut _userSignOut;
+  final ForgotPassword _forgotPassword;
 
   AuthBloc({
     required UserSignUp userSignUp,
     required UserSignIn userSignIn,
     required UserSignOut userSignOut,
+    required ForgotPassword forgotPassword,
   }) : _userSignUp = userSignUp,
        _userSignIn = userSignIn,
        _userSignOut = userSignOut,
+       _forgotPassword = forgotPassword,
        super(AuthInitial()) {
     on<AuthSignUpRequested>(_onAuthSignUp);
     on<AuthSignInRequested>(_onAuthSignIn);
     on<AuthSignOutRequested>(_onAuthSignOut);
+    on<AuthForgotPasswordRequested>(_onAuthForgotPassword);
   }
 
   Future<void> _onAuthSignUp(
@@ -65,6 +70,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthFailure(failure.message)),
       (_) => emit(AuthSignedOut()),
+    );
+  }
+
+  Future<void> _onAuthForgotPassword(
+    AuthForgotPasswordRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(ForgotPasswordLoading());
+    final result = await _forgotPassword(
+      ForgotPasswordParameters(emailAddress: event.email),
+    );
+    result.fold(
+      (failure) => emit(ForgotPasswordFailure(failure.message)),
+      (_) => emit(ForgotPasswordSuccess('Password reset link sent to your email')),
     );
   }
 }

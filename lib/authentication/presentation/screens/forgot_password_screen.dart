@@ -38,7 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void _onForgotPasswordTap() {
     final email = _emailController.text.trim();
     if (_formKey.currentState!.validate()) {
-      context.read<AuthBloc>().add(ForgotPasswordRequested(email));
+      context.read<AuthBloc>().add(AuthForgotPasswordRequested(email));
     }
   }
 

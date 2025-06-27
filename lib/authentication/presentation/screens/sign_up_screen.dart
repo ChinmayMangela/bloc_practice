@@ -43,13 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      final user = UserModel(
-        id: '',
-        name: name,
-        email: email,
-        password: password,
-      );
-      context.read<AuthBloc>().add(SignUpRequested(user));
+      context.read<AuthBloc>().add(AuthSignUpRequested(name, email, password));
     }
   }
 
@@ -94,13 +88,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return Scaffold(backgroundColor: Colors.black, body: _buildBody(state));
       },
       listener: (context, state) {
-        if (state is Authenticated) {
+        if (state is AuthLoading) {
+          Utils.showCircularProgressIndicator(context);
+        } else if (state is AuthSuccess) {
           navigatorKey.currentState!.pushReplacementNamed('/todoHome');
-        } else if(state is EmailNotVerified) {
-          navigatorKey.currentState!.pushReplacementNamed('/emailVerification');
-        } else if (state is AuthError) {
-          Utils.showSnackBar(state.errorMessage);
-        } else if (state is AuthInfo) {
+        } else if (state is AuthFailure) {
           Utils.showSnackBar(state.message);
         }
       },

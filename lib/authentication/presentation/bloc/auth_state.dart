@@ -41,3 +41,36 @@ final class AuthSignedOut extends AuthState {
   @override
   List<Object?> get props => [];
 }
+
+final class ForgotPasswordInitial extends AuthState {
+  ForgotPasswordInitial();
+  @override
+  List<Object?> get props => [];
+}
+
+final class ForgotPasswordLoading extends AuthState {
+  ForgotPasswordLoading();
+  @override
+  List<Object?> get props => [];
+}
+
+final class ForgotPasswordSuccess extends AuthState {
+  final String message;
+  ForgotPasswordSuccess(this.message);
+  @override
+  List<Object?> get props => [message];
+
+}
+
+final class ForgotPasswordFailure extends AuthState {
+  final String message;
+
+  ForgotPasswordFailure(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+
+

@@ -5,13 +5,13 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../data/failures/failure.dart';
 
-class UserSignUp implements UseCase<User, SignUpParameter> {
+class UserSignUp implements UseCase<User, UserSignUpParameter> {
   final AuthRepository authRepository;
 
   UserSignUp(this.authRepository);
 
   @override
-  Future<Either<Failure, User>> call(SignUpParameter params) {
+  Future<Either<Failure, User>> call(UserSignUpParameter params) {
     return authRepository.signUpWithEmail(
       name: params.name,
       email: params.email,
@@ -20,12 +20,12 @@ class UserSignUp implements UseCase<User, SignUpParameter> {
   }
 }
 
-class SignUpParameter {
+class UserSignUpParameter {
   final String name;
   final String email;
   final String password;
 
-  SignUpParameter({
+  UserSignUpParameter({
     required this.name,
     required this.email,
     required this.password,

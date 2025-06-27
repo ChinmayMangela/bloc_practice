@@ -38,11 +38,9 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is UnAuthenticated) {
+        if (state is AuthInitial) {
           Navigator.of(context).pushReplacementNamed('/signIn');
-        } else if (state is AuthError) {
-          Utils.showSnackBar(state.errorMessage);
-        } else if (state is AuthInfo) {
+        } else if (state is AuthFailure) {
           Utils.showSnackBar(state.message);
         }
       },
@@ -62,7 +60,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            context.read<AuthBloc>().add(SignOutRequested());
+            context.read<AuthBloc>().add(AuthSignOutRequested());
           },
           icon: Icon(Icons.logout),
         ),

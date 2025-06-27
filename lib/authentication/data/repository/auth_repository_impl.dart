@@ -50,4 +50,20 @@ class AuthRepositoryImpl extends AuthRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> forgotPassword(String email) async {
+   try {
+     await _authRemoteDataSource.forgotPassword(email: email);
+     return right(null);
+   } catch (e) {
+     return left(Failure(e.toString()));
+   }
+  }
+
+  @override
+  Future<Either<Failure, User>> getCurrentUser() {
+    // TODO: implement getCurrentUser
+    throw UnimplementedError();
+  }
 }

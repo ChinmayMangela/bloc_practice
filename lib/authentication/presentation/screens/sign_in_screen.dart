@@ -31,15 +31,13 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  void _onGoogleSignInTap() {
-    context.read<AuthBloc>().add(GoogleSignInRequested());
-  }
+  void _onGoogleSignInTap() {}
 
   void _onSignInTap() {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      context.read<AuthBloc>().add(SignInRequested(email, password));
+      context.read<AuthBloc>().add(AuthSignInRequested(email, password));
     }
   }
 
@@ -80,11 +78,11 @@ class _SignInScreenState extends State<SignInScreen> {
         return Scaffold(backgroundColor: Colors.black, body: _buildBody(state));
       },
       listener: (context, state) {
-        if (state is Authenticated) {
+        if (state is AuthLoading) {
+          Utils.showCircularProgressIndicator(context);
+        } else if (state is AuthSuccess) {
           navigatorKey.currentState!.pushReplacementNamed('/todoHome');
-        } else if (state is AuthError) {
-          Utils.showSnackBar(state.errorMessage);
-        } else if (state is AuthInfo) {
+        } else if (state is AuthFailure) {
           Utils.showSnackBar(state.message);
         }
       },
