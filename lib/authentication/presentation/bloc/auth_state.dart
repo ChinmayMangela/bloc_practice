@@ -1,3 +1,4 @@
+import 'package:bloc_practice/authentication/domain/entities/user.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthState extends Equatable {}
@@ -16,45 +17,26 @@ final class AuthLoading extends AuthState {
   List<Object?> get props => [];
 }
 
-final class Authenticated extends AuthState {
-  Authenticated();
+final class AuthSuccess extends AuthState {
+  final User user;
+
+  AuthSuccess(this.user);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }
 
-final class UnAuthenticated extends AuthState {
-  UnAuthenticated();
-
-  @override
-  List<Object?> get props => [];
-}
-
-final class AuthError extends AuthState {
-  final String errorMessage;
-  AuthError(this.errorMessage);
-
-  @override
-  List<Object?> get props => [errorMessage];
-}
-
-class AuthInfo extends AuthState {
+final class AuthFailure extends AuthState {
   final String message;
-  AuthInfo(this.message);
+
+  AuthFailure(this.message);
 
   @override
   List<Object?> get props => [message];
 }
 
-class EmailVerified extends AuthState {
-  EmailVerified();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class EmailNotVerified extends AuthState {
-  EmailNotVerified();
+final class AuthSignedOut extends AuthState {
+  AuthSignedOut();
 
   @override
   List<Object?> get props => [];

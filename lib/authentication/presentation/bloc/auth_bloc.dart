@@ -1,124 +1,70 @@
-import 'package:bloc_practice/authentication/domain/repository/auth_repository.dart';
+import 'package:bloc_practice/authentication/domain/use_cases/user_sign_up.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_event.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/use_cases/user_sign_in.dart';
+import '../../domain/use_cases/user_sign_out.dart';
+
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository _authRepository;
+  final UserSignUp _userSignUp;
+  final UserSignIn _userSignIn;
+  final UserSignOut _userSignOut;
 
-  AuthBloc({required AuthRepository authRepository})
-    : _authRepository = authRepository,
-      super(AuthInitial()) {
-    on<SignUpRequested>(_onSignUpRequested);
-    on<SignInRequested>(_onSignInRequested);
-    on<SignOutRequested>(_onSignOutRequested);
-    on<ForgotPasswordRequested>(_onForgotPasswordRequested);
-    on<GoogleSignInRequested>(_onGoogleSignInRequested);
-    on<SendEmailVerificationRequested>(_onSendEmailVerificationRequested);
-    on<CheckEmailVerifiedRequested>(_onCheckEmailVerifiedRequested);
+  AuthBloc({
+    required UserSignUp userSignUp,
+    required UserSignIn userSignIn,
+    required UserSignOut userSignOut,
+  }) : _userSignUp = userSignUp,
+       _userSignIn = userSignIn,
+       _userSignOut = userSignOut,
+       super(AuthInitial()) {
+    on<AuthSignUpRequested>(_onAuthSignUp);
+    on<AuthSignInRequested>(_onAuthSignIn);
+    on<AuthSignOutRequested>(_onAuthSignOut);
   }
 
-  Future<void> _onSignUpRequested(
-    SignUpRequested event,
+  Future<void> _onAuthSignUp(
+    AuthSignUpRequested event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _authRepository.signUpWithEmail(event.user);
-      await _authRepository.sendEmailVerification();
-      final isEmailVerified = await _authRepository.checkEmailVerified();
-      if (isEmailVerified == true) {
-        emit(Authenticated());
-      } else {
-        emit(EmailNotVerified());
-      }
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
+    final result = await _userSignUp(
+      UserSignUpParameter(
+        name: event.name,
+        email: event.email,
+        password: event.password,
+      ),
+    );
+    result.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (user) => emit(AuthSuccess(user)),
+    );
   }
 
-  Future<void> _onSignInRequested(
-    SignInRequested event,
+  Future<void> _onAuthSignIn(
+    AuthSignInRequested event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _authRepository.signInWithEmail(event.email, event.password);
-      emit(Authenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
+    final result = await _userSignIn(
+      UserSignInParameters(email: event.email, password: event.password),
+    );
+    result.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (user) => emit(AuthSuccess(user)),
+    );
   }
 
-  Future<void> _onSignOutRequested(
-    SignOutRequested event,
+  Future<void> _onAuthSignOut(
+    AuthSignOutRequested event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _authRepository.signOut();
-      emit(UnAuthenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onForgotPasswordRequested(
-    ForgotPasswordRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthLoading());
-    try {
-      await _authRepository.resetPassword(event.email);
-      emit(UnAuthenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onGoogleSignInRequested(
-    GoogleSignInRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthLoading());
-    try {
-      await _authRepository.signInWithGoogle();
-      emit(Authenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onSendEmailVerificationRequested(
-    SendEmailVerificationRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    try {
-      await _authRepository.sendEmailVerification();
-      emit(
-        AuthInfo(
-          'Verification email has been resent. Please check your inbox.',
-        ),
-      );
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onCheckEmailVerifiedRequested(
-    CheckEmailVerifiedRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthLoading());
-    try {
-      final isEmailVerified = await _authRepository.checkEmailVerified();
-      if (isEmailVerified == true) {
-        emit(Authenticated());
-      } else {
-        emit(EmailNotVerified());
-      }
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
+    final result = await _userSignOut(NoParameters());
+    result.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (_) => emit(AuthSignedOut()),
+    );
   }
 }
