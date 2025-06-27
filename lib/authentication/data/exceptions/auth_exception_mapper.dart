@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import '../../../common/exceptions/firebase_auth_error_codes.dart';
 
 class AuthExceptionMapper {
+  const AuthExceptionMapper._();
+
   static AuthException mapFirebaseAuthException(FirebaseAuthException e) {
     if (kDebugMode) {
       print('Firebase Auth Exception - Message: ${e.message}, code: ${e.code}');
@@ -68,7 +70,9 @@ class AuthExceptionMapper {
 
   static AuthException mapSocketException(SocketException e) {
     if (kDebugMode) {
-      print('Socket Exception - Message: ${e.message}, code: ${e.osError?.errorCode}');
+      print(
+        'Socket Exception - Message: ${e.message}, code: ${e.osError?.errorCode}',
+      );
     }
     throw AuthException(
       'No internet connection or server unreachable. Please check your network',
