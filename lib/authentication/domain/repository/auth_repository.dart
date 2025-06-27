@@ -1,13 +1,18 @@
-
-
-import 'package:bloc_practice/authentication/data/model/user_model.dart';
+import 'package:bloc_practice/authentication/data/failures/failure.dart';
+import 'package:bloc_practice/authentication/domain/entities/user.dart';
+import 'package:fpdart/fpdart.dart';
 
 abstract class AuthRepository {
-  Future<void> signInWithEmail(String email, String password);
-  Future<void> signUpWithEmail(UserModel user);
-  Future<void> signOut();
-  Future<void> sendEmailVerification();
-  Future<void> resetPassword(String email);
-  Future<void> signInWithGoogle();
-  Future<bool?> checkEmailVerified();
+  Future<Either<Failure, User>> signUpWithEmail({
+    required String name,
+    required String email,
+    required String password,
+  });
+
+  Future<Either<Failure, User>> signInWithEmail({
+    required String email,
+    required String password,
+  });
+
+  Future<Either<Failure, void>> signOut();
 }

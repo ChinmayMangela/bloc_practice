@@ -1,6 +1,8 @@
 import 'package:bloc_practice/authentication/data/data_source/remote/auth_remote_data_source.dart';
-import 'package:bloc_practice/authentication/data/model/user_model.dart';
+import 'package:bloc_practice/authentication/data/failures/failure.dart';
+import 'package:bloc_practice/authentication/domain/entities/user.dart';
 import 'package:bloc_practice/authentication/domain/repository/auth_repository.dart';
+import 'package:fpdart/fpdart.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   AuthRepositoryImpl({required AuthRemoteDataSource authRemoteDataSource})
@@ -9,38 +11,43 @@ class AuthRepositoryImpl extends AuthRepository {
   final AuthRemoteDataSource _authRemoteDataSource;
 
   @override
-  Future<void> resetPassword(String email) async {
-    await _authRemoteDataSource.forgotPassword(email: email);
+  Future<Either<Failure, User>> signUpWithEmail({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final user = await _authRemoteDataSource.signUpWithEmailAndPassword(
+          name: name, email: email, password: password);
+
+      return right(user);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 
   @override
-  Future<void> sendEmailVerification() async {
-    await _authRemoteDataSource.sendEmailVerification();
+  Future<Either<Failure, User>> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final user = await _authRemoteDataSource.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      return right(user);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 
   @override
-  Future<void> signInWithEmail(String email, String password) async {
-    await _authRemoteDataSource.signInWithEmail(
-        email: email, password: password);
-  }
-
-  @override
-  Future<void> signOut() async {
-    await _authRemoteDataSource.signOut();
-  }
-
-  @override
-  Future<void> signUpWithEmail(UserModel user) async {
-    await _authRemoteDataSource.signUpWithEmail(user: user);
-  }
-
-  @override
-  Future<void> signInWithGoogle() async {
-    await _authRemoteDataSource.signInWithGoogle();
-  }
-
-  @override
-  Future<bool?> checkEmailVerified() async {
-    return await _authRemoteDataSource.checkEmailVerified();
+  Future<Either<Failure, void>> signOut() async {
+    try {
+      await _authRemoteDataSource.signOut();
+      return right(null);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 }
