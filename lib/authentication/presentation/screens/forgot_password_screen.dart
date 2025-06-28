@@ -45,41 +45,50 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: _buildAppBar(),
-        body: _buildBody());
+      backgroundColor: Colors.black,
+      appBar: _buildAppBar(),
+      body: _buildBody(),
+    );
   }
 
   AppBar _buildAppBar() {
     return AppBar(
-      leading: IconButton(onPressed: () {
-        navigatorKey.currentState!.pop();
-      }, icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+      leading: IconButton(
+        onPressed: () {
+          navigatorKey.currentState!.pop();
+        },
+        icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+      ),
       backgroundColor: Colors.black,
-      title: Text('Forgot Password', style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-          color: Colors.white
-      ),),
+      title: Text(
+        'Forgot Password',
+        style: Theme.of(
+          context,
+        ).textTheme.headlineSmall!.copyWith(color: Colors.white),
+      ),
     );
   }
 
   Widget _buildBody() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildEmailField(),
-              const SizedBox(height: 16),
-              BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-                if(state is AuthLoading) {
-                  return Center(child: CircularProgressIndicator(),);
-                }
-                return _buildForgotPasswordButton();
-              })
-            ],
+    return BlocListener(
+      listener: (context, state) {
+        if (state is ForgotPasswordFailure) {
+          Utils.showSnackBar(state.message);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildEmailField(),
+                const SizedBox(height: 16),
+                _buildForgotPasswordButton(context.watch<AuthBloc>().state),
+              ],
+            ),
           ),
         ),
       ),
@@ -96,12 +105,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildForgotPasswordButton() {
-    return CustomButton(onTap: _onForgotPasswordTap, child: Text(
-      'Forgot Password',
-      style: Theme.of(
-        context,
-      ).textTheme.bodyMedium!.copyWith(color: Colors.white),
-    ));
+  Widget _buildForgotPasswordButton(AuthState state) {
+    return CustomButton(
+      onTap: _onForgotPasswordTap,
+      child:
+          state is ForgotPasswordLoading
+              ? const CircularProgressIndicator()
+              : Text(
+                'Forgot Password',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: Colors.white),
+              ),
+    );
   }
 }

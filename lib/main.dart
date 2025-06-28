@@ -1,7 +1,8 @@
 import 'package:bloc_practice/authentication/data/data_source/remote/auth_remote_data_source.dart';
+import 'package:bloc_practice/authentication/domain/use_cases/forgot_password.dart';
+import 'package:bloc_practice/authentication/domain/use_cases/user_sign_up.dart';
 import 'package:bloc_practice/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_practice/authentication/presentation/screens/auth_gate.dart';
-import 'package:bloc_practice/authentication/presentation/screens/email_verification_screen.dart';
 import 'package:bloc_practice/authentication/presentation/screens/sign_in_screen.dart';
 import 'package:bloc_practice/counter/bloc/counter_bloc.dart';
 import 'package:bloc_practice/firebase_options.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'authentication/data/repository/auth_repository_impl.dart';
+import 'authentication/domain/use_cases/user_sign_in.dart';
+import 'authentication/domain/use_cases/user_sign_out.dart';
 import 'authentication/presentation/screens/forgot_password_screen.dart';
 import 'authentication/presentation/screens/sign_up_screen.dart';
 
@@ -28,10 +31,17 @@ void main() async {
   );
 
   final firebaseAuth = FirebaseAuth.instance;
-  final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth: firebaseAuth);
+  final authRemoteDataSource = AuthRemoteDataSourceImpl(
+    firebaseAuth: firebaseAuth,
+  );
   final authRepository = AuthRepositoryImpl(
     authRemoteDataSource: authRemoteDataSource,
   );
+  final UserSignUp userSignUp = UserSignUp(authRepository);
+  final userSignIn = UserSignIn(authRepository);
+  final userSignOut = UserSignOut(authRepository);
+  final userForgotPassword = ForgotPassword(authRepository);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -40,7 +50,15 @@ void main() async {
           create: (_) => TodoBloc(todoRepository),
           child: const MyApp(),
         ),
-        BlocProvider(create: (_) => AuthBloc(authRepository: authRepository)),
+        BlocProvider(
+          create:
+              (_) => AuthBloc(
+                userSignUp: userSignUp,
+                userSignIn: userSignIn,
+                userSignOut: userSignOut,
+                forgotPassword: userForgotPassword,
+              ),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -71,6 +89,6 @@ class MyApp extends StatelessWidget {
     '/forgotPassword': (context) => ForgotPasswordScreen(),
     '/todoHome': (context) => TodoHomeScreen(),
     '/signIn': (context) => SignInScreen(),
-    '/emailVerification': (context) => EmailVerificationScreen(),
+    // '/emailVerification': (context) => EmailVerificationScreen(),
   };
 }

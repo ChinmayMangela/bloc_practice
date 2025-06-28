@@ -14,7 +14,7 @@ class AuthGate extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: (context, snapshot) {
       if(snapshot.hasData) {
-        return const EmailVerificationScreen();
+        return const TodoHomeScreen();
       } else {
         return const SignInScreen();
       }

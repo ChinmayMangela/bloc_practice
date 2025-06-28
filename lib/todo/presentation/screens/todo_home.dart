@@ -1,4 +1,5 @@
 import 'package:bloc_practice/authentication/presentation/bloc/auth_state.dart';
+import 'package:bloc_practice/main.dart';
 import 'package:bloc_practice/todo/presentation/bloc/todo_bloc.dart';
 import 'package:bloc_practice/todo/presentation/bloc/todo_event.dart';
 import 'package:bloc_practice/todo/presentation/bloc/todo_state.dart';
@@ -36,19 +37,21 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: _buildBody(),
+          floatingActionButton: _buildFloatingActionButton(),
+        );
+      },
       listener: (context, state) {
-        if (state is AuthInitial) {
-          Navigator.of(context).pushReplacementNamed('/signIn');
-        } else if (state is AuthFailure) {
+        if (state is AuthFailure) {
           Utils.showSnackBar(state.message);
+        } else if (state is AuthSignedOut) {
+          navigatorKey.currentState!.pushReplacementNamed('/signIn');
         }
       },
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        body: _buildBody(),
-        floatingActionButton: _buildFloatingActionButton(),
-      ),
     );
   }
 
@@ -56,7 +59,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
     return AppBar(
       title: Text('Todo App'),
       centerTitle: true,
-        automaticallyImplyLeading: false,
+      automaticallyImplyLeading: false,
       actions: [
         IconButton(
           onPressed: () {
